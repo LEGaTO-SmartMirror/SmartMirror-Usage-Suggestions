@@ -9,7 +9,11 @@ This module suggests interactions for the user based on rules. Rules are defined
 
 ```javascript
 {
-	    module: "SmartMirror-Usage-Suggestions"
+        module: "SmartMirror-Usage-Suggestions",
+        config: {
+            textToSpeech: true,
+            language: "de" // available: de, en
+        }
 },
 ```
 
