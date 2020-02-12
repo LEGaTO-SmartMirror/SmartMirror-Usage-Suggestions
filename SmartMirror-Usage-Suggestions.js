@@ -1,5 +1,8 @@
 Module.register("SmartMirror-Usage-Suggestions", {
-    defaults:{},
+    defaults:{
+        textToSpeech: false,
+        language: "de"
+    },
     suggestions: [],
 
     
