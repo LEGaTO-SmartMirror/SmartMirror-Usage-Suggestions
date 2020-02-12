@@ -55,10 +55,14 @@ Module.register("SmartMirror-Usage-Suggestions", {
         var d = new Date()
 
         //check rules
-        if(d.getHours() < 14 && self.foodSpecialAvalable){
-            self.suggestions.push({suggestedApp:'mensa' , message: 'There is special food available. Check out the mensa app!'})
-        } else if(d.getHours() <= 14 && d.getHours() >= 11){
-            self.suggestions.push({suggestedApp:'mensa', message: 'Its lunchtime! Check out mensa menu before you go!'})
+        if( d.getHours() >= 10 && d.getHours() <= 14){
+            if(self.foodSpecialAvalable){
+                self.suggestions.push({suggestedApp:'mensa' , message: 'There is special food available. Check out the mensa app!'})
+            } else if (!self.foodSpecialAvalable) {
+                self.suggestions.push({suggestedApp:'canteen' , message: 'Dont like the food at the mensa? Check out the Westend canteen menu!'})
+            } else {
+                self.suggestions.push({suggestedApp:'food', message: 'Its lunchtime! Check out lunch menu before you go!'})
+            }
         }
         if(self.calendarEventToday){
             self.suggestions.push({suggestedApp:'calendar', message: 'There are events today! Check out the calendar app!'})
