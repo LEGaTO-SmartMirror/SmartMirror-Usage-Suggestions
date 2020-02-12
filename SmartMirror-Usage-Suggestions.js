@@ -35,6 +35,13 @@ Module.register("SmartMirror-Usage-Suggestions", {
             var suggestion = self.suggestions[randomIndex]
             self.sendNotification('SHOW_ALERT', {type: "notification", message: suggestion.message, timer: 6000})
             self.sendNotification('USAGE_SUGGESTION', suggestion.suggestedApp)
+            //text to speech
+            if(self.config.textToSpeech){
+                if (self.config.language == "de")
+				    self.sendNotification('smartmirror-TTS-ger', suggestion.message);
+			    else if (self.config.language == "en")
+				    self.sendNotification('smartmirror-TTS-en',  suggestion.message);
+            }
             self.suggestions.splice(randomIndex, 1)
             setTimeout(() => {self.broadcastNotifications()}, 40000) 
         }        
