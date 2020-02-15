@@ -72,6 +72,7 @@ Module.register("SmartMirror-Usage-Suggestions", {
         }
         if(d.getHours() > 15){
             self.suggestions.push({suggestedApp:'transport', message: 'Finishing up for today? Check out traffic or public transport situation!'})
+            self.suggestions.push({suggestedApp:'fuel', message: 'Fuel prices are the lowes between 6 and 8 pm. Check out the gas prices before you drive home!'})
         } 
         if(!(self.weatherCategory.includes('clear') || self.weatherCategory.includes('few clouds') || self.weatherCategory.includes('scattered clouds') || self.weatherCategory.includes('broken clouds'))){
             self.suggestions.push({suggestedApp:'transport', message: 'Bad weather? Check out next transportation departures.'})
