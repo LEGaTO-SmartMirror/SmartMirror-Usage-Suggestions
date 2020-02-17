@@ -96,6 +96,10 @@ Module.register("SmartMirror-Usage-Suggestions", {
             }
             self.suggestions.push({suggestedApp:'selfie', message: 'You ' + a[self.numberOfPersons] + ' look great! Make a picture with the selfie app!'})
         }
+        if(self.dota2Updated){
+            self.suggestions.push({suggestedApp:'dota2', message: 'Don\'t miss out upcoming Dota2 esports matches. Start the esports app!'})
+            self.weatherUpdated = false
+        }
         
         
     },
@@ -152,6 +156,9 @@ Module.register("SmartMirror-Usage-Suggestions", {
                 break;
             case 'SOCCER_UPDATED':
                 self.soccerUpdated = true
+                break;
+            case 'DOTA2_UPDATED':
+                self.dota2Updated = true
                 break;
             case 'DETECTED_OBJECTS': //for person detection
                 objects = payload.DETECTED_OBJECTS
