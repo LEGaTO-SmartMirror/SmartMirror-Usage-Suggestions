@@ -93,7 +93,7 @@ Module.register("SmartMirror-Usage-Suggestions", {
             if(self.numberOfPersons > a.length){
                 self.numberOfPersons = a.length
             }
-            self.suggestions.push({suggestedApp:'selfie', message: 'You ' + a[self.numberOfPersons] + ' look great! Make a picture with the selfie app!'})
+            self.suggestions.push({suggestedApp:'selfie', message: 'You ' + a[self.numberOfPersons] + ' look great! Make a picture with the peace gesture with both hands!'})
         }
         if(self.dota2Updated){
             self.suggestions.push({suggestedApp:'dota2', message: 'Don\'t miss out upcoming Dota2 esports matches. Start the esports app!'})
