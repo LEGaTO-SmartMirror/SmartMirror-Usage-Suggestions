@@ -34,6 +34,7 @@ Module.register("SmartMirror-Usage-Suggestions", {
 
         if(!self.stopSuggestion && self.suggestions.length > 0){
             // suggestion = self.suggestions.pop()
+            Log.log("Broadcast message")
             const randomIndex = Math.floor(Math.random() * self.suggestions.length)
             var suggestion = self.suggestions[randomIndex]
             self.sendNotification('SHOW_ALERT', {type: "notification", message: suggestion.message, timer: 6000})
@@ -53,7 +54,7 @@ Module.register("SmartMirror-Usage-Suggestions", {
     checkRules: function(){
         var self = this
         var d = new Date()
-
+        Log.log("Checking Rules")
         //check rules
         if( d.getHours() >= 10 && d.getHours() <= 14){
             if(self.foodSpecialAvalable){
@@ -107,7 +108,7 @@ Module.register("SmartMirror-Usage-Suggestions", {
     suggest: function(){
         var self = this
         self.checkRules()
-
+        Log.log("Suggestions", self.suggestions)
         //broadcast suggestion
         setTimeout(() => {self.broadcastNotifications()}, 10000) 
     },
@@ -119,8 +120,12 @@ Module.register("SmartMirror-Usage-Suggestions", {
             case 'USER_LOGIN':
                 if(payload != -1){
                     self.stopSuggestion = false
+                    self.suggestions = []
                     self.suggest()
+                    Log.log("Start suggestion")
+                    Log.log('USER_LOGIN', payload)
                 }else {
+                    Log.log("Stop suggestions")
                     self.stopSuggestion = true
                     self.suggestions = []
                 }
