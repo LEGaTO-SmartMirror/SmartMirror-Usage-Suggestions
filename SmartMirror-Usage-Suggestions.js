@@ -57,6 +57,7 @@ Module.register("SmartMirror-Usage-Suggestions", {
         if( d.getHours() >= 10 && d.getHours() <= 14){
             if(self.foodSpecialAvalable){
                 self.suggestions.push({suggestedApp:'mensa' , message: 'There is special food available. Check out the mensa app!'})
+                self.suggestions.push({suggestedApp:'canteen' , message: 'Dont like the food at the mensa? Check out the Westend canteen menu!'})
             } else if (!self.foodSpecialAvalable) {
                 self.suggestions.push({suggestedApp:'canteen' , message: 'Dont like the food at the mensa? Check out the Westend canteen menu!'})
             } else {
