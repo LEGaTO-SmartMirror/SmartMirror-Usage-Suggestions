@@ -1,7 +1,9 @@
 Module.register("SmartMirror-Usage-Suggestions", {
     defaults:{
         textToSpeech: false,
-        language: "de"
+        language: "en",
+        timeUntilFistNotification: 10*1000,
+        timeIntervalBetweenNotifications: 60*1000
     },
     suggestions: [],
 
@@ -41,12 +43,12 @@ Module.register("SmartMirror-Usage-Suggestions", {
             //text to speech
             if(self.config.textToSpeech){
                 if (self.config.language == "de")
-				    self.sendNotification('smartmirror-TTS-ger', suggestion.message);
+				    self.sendNotification('smartmirror-TTS-ger', suggestion.messageDE);
 			    else if (self.config.language == "en")
-				    self.sendNotification('smartmirror-TTS-en',  suggestion.message);
+				    self.sendNotification('smartmirror-TTS-en',  suggestion.messageEN);
             }
             self.suggestions.splice(randomIndex, 1)
-            setTimeout(() => {self.broadcastNotifications()}, 40000) 
+            setTimeout(() => {self.broadcastNotifications()}, this.config.timeIntervalBetweenNotifications) 
         }        
     },
 
@@ -56,37 +58,37 @@ Module.register("SmartMirror-Usage-Suggestions", {
         //check rules
         if( d.getHours() >= 10 && d.getHours() <= 14){
             if(self.foodSpecialAvalable){
-                self.suggestions.push({suggestedApp:'mensa' , message: 'There is special food available. Check out the mensa app!'})
-                self.suggestions.push({suggestedApp:'canteen' , message: 'Dont like the food at the mensa? Check out the Westend canteen menu!'})
+                self.suggestions.push({suggestedApp:'mensa' , messageEN: 'There is special food available. Check out the mensa app!', messageDE: 'Es gibt Mensa Spezial! Starte die Mensa App!'})
+                self.suggestions.push({suggestedApp:'canteen' , messageEN: 'Dont like the food at the mensa? Check out the Westend canteen menu!', messageDE: 'Dir gefällt das Mensa Menu nicht? Schaue was is im Westend gibt!'})
             } else if (!self.foodSpecialAvalable) {
-                self.suggestions.push({suggestedApp:'canteen' , message: 'Dont like the food at the mensa? Check out the Westend canteen menu!'})
+                self.suggestions.push({suggestedApp:'canteen' , messageEN: 'Dont like the food at the mensa? Check out the Westend canteen menu!', messageDE: 'Dir gefällt das Mensa Menu nicht? Schaue was is im Westend gibt!'})
             } else {
-                self.suggestions.push({suggestedApp:'food', message: 'Its lunchtime! Check out lunch menu before you go!'})
+                self.suggestions.push({suggestedApp:'food', messageEN: 'Its lunchtime! Check out lunch menu before you go!', messageDE: 'Mittagszeit! Schaue dir das Menu an bevor du gehst!'})
             }
         }
         if(self.calendarEventToday){
-            self.suggestions.push({suggestedApp:'calendar', message: 'There are events today! Check out the calendar app!'})
+            self.suggestions.push({suggestedApp:'calendar', messageEN: 'There are events today! Check out the calendar app!', messageDE: 'Eine Veranstaltung steht an! Starte die Kalender App!'})
         } 
         if(self.calendarEventToday){
-            self.suggestions.push({suggestedApp:'calendar', message: 'An event will start soon! Check out the calendar app!'})
+            self.suggestions.push({suggestedApp:'calendar', messageEN: 'An event will start soon! Check out the calendar app!', messageDE: 'Eine Veranstaltung beginnt bald! Starte die Kalender App!'})
         }
         if(d.getHours() > 15){
-            self.suggestions.push({suggestedApp:'transport', message: 'Finishing up for today? Check out traffic or public transport situation!'})
-            self.suggestions.push({suggestedApp:'fuel', message: 'Fuel prices are the lowes between 6 and 8 pm. Check out the gas prices before you drive home!'})
+            self.suggestions.push({suggestedApp:'transport', messageEN: 'Finishing up for today? Check out traffic or public transport situation!', messageDE: 'Feierabend für heute? Entkomme dem Stau mit der Traffic App!'})
+            self.suggestions.push({suggestedApp:'fuel', messageEN: 'Fuel prices are the lowes between 6 and 8 pm. Check out the gas prices before you drive home!', messageDE: 'Benzin ist am günstigsten von 18 bis 20 Uhr! Starte die Fuel Prices App!'})
         } 
         if(!(self.weatherCategory.includes('clear') || self.weatherCategory.includes('few clouds') || self.weatherCategory.includes('scattered clouds') || self.weatherCategory.includes('broken clouds'))){
-            self.suggestions.push({suggestedApp:'transport', message: 'Bad weather? Check out next transportation departures.'})
+            self.suggestions.push({suggestedApp:'transport', messageEN: 'Bad weather? Check out next transportation departures.', messageDE: 'Schlechtes Wetter? Plane deine Abfahrt mit der Public Transport App!'})
         }
         if(self.newNewsAvalable){
-            self.suggestions.push({suggestedApp:'news', message: 'We have updated the news. Check them out!'})
+            self.suggestions.push({suggestedApp:'news', messageEN: 'We have updated the news. Check them out!', messageDE: 'Wir haben die Nachrichten aktualisiert! Starte die Nachricten App!'})
             self.newNewsAvalable = false
         }
         if(self.weatherUpdated){
-            self.suggestions.push({suggestedApp:'weather', message: 'We have updated the weather. Check it out!'})
+            self.suggestions.push({suggestedApp:'weather', messageEN: 'We have updated the weather. Check it out!', messageDE: 'Es gibt neue Wetter Informationen! Überprüfe das Wetter mit der Wetter App!'})
             self.weatherUpdated = false
         }
         if(self.soccerUpdated){
-            self.suggestions.push({suggestedApp:'soccer', message: 'New soccer results available. Start the soccer app!'})
+            self.suggestions.push({suggestedApp:'soccer', messageEN: 'New soccer results available. Start the soccer app!', messageDE: 'Neue Fußballergebnisse sind da! Schau sie dir an mit der Soccer App!'})
             self.weatherUpdated = false
         }
         if(self.numberOfPersons > 1){
@@ -94,10 +96,10 @@ Module.register("SmartMirror-Usage-Suggestions", {
             if(self.numberOfPersons > a.length){
                 self.numberOfPersons = a.length
             }
-            self.suggestions.push({suggestedApp:'selfie', message: 'You ' + a[self.numberOfPersons] + ' look great! Make a picture with the peace gesture with both hands!'})
+            self.suggestions.push({suggestedApp:'selfie', messageEN: 'You ' + a[self.numberOfPersons] + ' look great! Make a picture with the peace gesture with both hands!', message: 'Ihr ' + a[self.numberOfPersons] + ' seht toll aus! Macht ein Selfie mit der Selfie Geste!'})
         }
         if(self.dota2Updated){
-            self.suggestions.push({suggestedApp:'dota2', message: 'Don\'t miss out upcoming Dota2 esports matches. Start the esports app!'})
+            self.suggestions.push({suggestedApp:'dota2', messageEN: 'Don\'t miss out upcoming Dota2 esports matches. Start the esports app!', messageDE: 'Verpasse keine Dota2 Esports Spiele mehr! Starte die Esports App!'})
             self.weatherUpdated = false
         }
         
@@ -108,7 +110,7 @@ Module.register("SmartMirror-Usage-Suggestions", {
         var self = this
         self.checkRules()
         //broadcast suggestion
-        setTimeout(() => {self.broadcastNotifications()}, 10000) 
+        setTimeout(() => {self.broadcastNotifications()}, this.config.timeUntilFistNotification) 
     },
 
 	notificationReceived: function(notification, payload, sender) 
