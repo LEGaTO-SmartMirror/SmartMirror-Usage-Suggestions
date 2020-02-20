@@ -38,14 +38,18 @@ Module.register("SmartMirror-Usage-Suggestions", {
             // suggestion = self.suggestions.pop()
             const randomIndex = Math.floor(Math.random() * self.suggestions.length)
             var suggestion = self.suggestions[randomIndex]
-            self.sendNotification('SHOW_ALERT', {type: "notification", message: suggestion.message, timer: 6000})
             self.sendNotification('USAGE_SUGGESTION', suggestion.suggestedApp)
             //text to speech
             if(self.config.textToSpeech){
-                if (self.config.language == "de")
+                if (self.config.language == "de"){
+                    self.sendNotification('SHOW_ALERT', {type: "notification", message: suggestion.messageDE, timer: 6000})
 				    self.sendNotification('smartmirror-TTS-ger', suggestion.messageDE);
-			    else if (self.config.language == "en")
-				    self.sendNotification('smartmirror-TTS-en',  suggestion.messageEN);
+                }
+			    else if (self.config.language == "en"){
+                    self.sendNotification('SHOW_ALERT', {type: "notification", message: suggestion.messageEN, timer: 6000})
+                    self.sendNotification('smartmirror-TTS-en',  suggestion.messageEN);
+                }
+				    
             }
             self.suggestions.splice(randomIndex, 1)
             setTimeout(() => {self.broadcastNotifications()}, this.config.timeIntervalBetweenNotifications) 
@@ -92,11 +96,13 @@ Module.register("SmartMirror-Usage-Suggestions", {
             self.weatherUpdated = false
         }
         if(self.numberOfPersons > 1){
-            a = ['','one','two','three','four', 'five', 'guys']
-            if(self.numberOfPersons > a.length){
-                self.numberOfPersons = a.length
+            en = ['','','two','three','four', 'five', 'guys']
+            ger = ['','','zwei','drei','vier', 'fünf', '']
+
+            if(self.numberOfPersons > en.length){
+                self.numberOfPersons = en.length
             }
-            self.suggestions.push({suggestedApp:'selfie', messageEN: 'You ' + a[self.numberOfPersons] + ' look great! Make a picture with the peace gesture with both hands!', message: 'Ihr ' + a[self.numberOfPersons] + ' seht toll aus! Macht ein Selfie mit der Selfie Geste!'})
+            self.suggestions.push({suggestedApp:'selfie', messageEN: 'You ' + en[self.numberOfPersons] + ' look great! Make a picture with the peace gesture with both hands!', message: 'Ihr ' + ger[self.numberOfPersons] + ' seht toll aus! Macht ein Selfie mit der Selfie Geste!'})
         }
         if(self.dota2Updated){
             self.suggestions.push({suggestedApp:'dota2', messageEN: 'Don\'t miss out upcoming Dota2 esports matches. Start the esports app!', messageDE: 'Verpasse keine Dota2 Esports Spiele mehr! Starte die Esports App!'})
