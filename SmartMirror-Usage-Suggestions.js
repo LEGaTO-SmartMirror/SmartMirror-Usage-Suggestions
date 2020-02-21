@@ -3,7 +3,8 @@ Module.register("SmartMirror-Usage-Suggestions", {
         textToSpeech: false,
         language: "en",
         timeUntilFistNotification: 10*1000,
-        timeIntervalBetweenNotifications: 60*1000
+        timeIntervalBetweenNotifications: 60*1000,
+        timeBetweenUserLogin: 5*60*1000,
     },
     suggestions: [],
 
@@ -35,7 +36,6 @@ Module.register("SmartMirror-Usage-Suggestions", {
         var self = this
 
         if(!self.stopSuggestion && self.suggestions.length > 0){
-            // suggestion = self.suggestions.pop()
             const randomIndex = Math.floor(Math.random() * self.suggestions.length)
             var suggestion = self.suggestions[randomIndex]
             self.sendNotification('USAGE_SUGGESTION', suggestion.suggestedApp)
@@ -116,7 +116,7 @@ Module.register("SmartMirror-Usage-Suggestions", {
         var self = this
         self.checkRules()
         //broadcast suggestion
-        setTimeout(() => {self.broadcastNotifications()}, this.config.timeUntilFistNotification) 
+        setTimeout(() => {self.broadcastNotifications()}, self.config.timeUntilFistNotification) 
     },
 
 	notificationReceived: function(notification, payload, sender) 
@@ -125,9 +125,13 @@ Module.register("SmartMirror-Usage-Suggestions", {
 		switch(notification){
             case 'USER_LOGIN':
                 if(payload != -1){
-                    self.stopSuggestion = false
-                    self.suggestions = []
-                    self.suggest()
+                    const d = new Date()
+                    if(self.lastLogin === undefined || ((d - self.lastLogin) > self.config.timeBetweenUserLogin)){
+                        self.lastLogin = d
+                        self.stopSuggestion = false
+                        self.suggestions = []
+                        self.suggest()
+                    }
                 }else {
                     self.stopSuggestion = true
                     self.suggestions = []
